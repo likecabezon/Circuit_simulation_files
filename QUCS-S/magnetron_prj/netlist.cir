@@ -1,0 +1,23 @@
+* Qucs 25.1.0  /home/luis/QucsWorkspace/magnetron_prj/Test.sch
+.INCLUDE "/tmp/.mount_Qucs-SPiPHdP/usr/share/qucs-s/xspice_cmlib/include/ngspice_mathfunc.inc"
+.SUBCKT magnetron_cell v1 v2 L=2e-9 C=2e-12 YL=0.1 G0=0.12 G1=1e-5 
+B1 v1  v2  I = {(-G0*(V(v1)-V(v2))) + G1*pwr(V(v1)-V(v2),3)} 
+
+R1 v2 v1  {1/YL} tc1=0.0 tc2=0.0 
+C1 v2 v1  {C}  IC=1
+L1 v2 v1  {L} 
+.ENDS
+.PARAM L_eq = 2n
+.PARAM C_eq = 2p
+XSUB1 Vo 0 magnetron_cell L={L_EQ} C={C_EQ} YL=0.1 G0=0.12 G1=1E-5
+
+.control
+
+tran 1.49993e-11 1e-07 0  uic
+write spice4qucs.tr1.plot v(Vo)
+destroy all
+reset
+
+exit
+.endc
+.END

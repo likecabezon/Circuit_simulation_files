@@ -1,0 +1,132 @@
+
+.SUBCKT SpiceOpamp_LM324 	gnd 1 2 3 4 5
+*
+C1   11 12 5.544E-12
+C2    6  7 20.00E-12
+DC    5 53 DX
+DE   54  5 DX
+DLP  90 91 DX
+DLN  92 90 DX
+DP    4  3 DX
+EGND 99  0 POLY(2) (3,0) (4,0) 0 .5 .5
+FB    7 99 POLY(5) VB VC VE VLP VLN 0 15.91E6 -20E6 20E6 20E6 -20E6
+GA    6  0 11 12 125.7E-6
+GCM   0  6 10 99 7.067E-9
+IEE   3 10 DC 10.04E-6
+HLIM 90  0 VLIM 1K
+Q1   11  2 13 QX
+Q2   12  1 14 QX
+R2    6  9 100.0E3
+RC1   4 11 7.957E3
+RC2   4 12 7.957E3
+RE1  13 10 2.773E3
+RE2  14 10 2.773E3
+REE  10 99 19.92E6
+RO1   8  5 50
+RO2   7 99 50
+RP    3  4 30.31E3
+VB    9  0 DC 0
+VC 3 53 DC 2.100
+VE   54  4 DC .6
+VLIM  7  8 DC 0
+VLP  91  0 DC 40
+VLN   0 92 DC 40
+.MODEL DX D(IS=800.0E-18)
+.MODEL QX PNP(IS=800.0E-18 BF=250)
+.ENDS 
+  
+
+R:R1 _net0 _net1 R="450e6" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R2 gnd _net1 R="31k" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+C:C1 gnd _net1 C="4.7 nF" V=""
+R:R3 _net1 _net3 R="1 kOhm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+Diode:D_1N4148_1 _net4 _net3 Is="222p" N="1.65" Cj0="4p" M="0.333" Vj="0.7" Fc="0.5" Cp="0" Isr="0" Nr="2" Rs="68.6m" Tt="5.76n" Ikf="26.85" Kf="0" Af="1" Ffe="1" Bv="75" Ibv="0" Temp="26.85" Xti="3.0" Eg="1.11" Tbv="0.0" Trs="0.0" Ttt1="0.0" Ttt2="0.0" Tm1="0.0" Tm2="0.0" Tnom="26.85" Area="1.0"
+Vdc:V1 _net4 gnd U="15 V"
+C:C2 gnd _net3 C="1 nF" V=""
+Sub:OP1 _net3 _net5 _net4 gnd _net5 Type="SpiceOpamp_LM324"
+R:R4 _net5 _net6 R="10 kOhm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R5 _net6 _net4 R="180 kOhm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+C:C3 gnd _net6 C="33 nF" V=""
+R:R6 _net7 _net5 R="100 kOhm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+C:C4 gnd _net7 C="10 nF" V=""
+Sub:OP2 _net8 _net9 _net10 gnd _net11 Type="SpiceOpamp_LM324"
+R:R7 _net9 _net5 R="10 kOhm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+Vdc:V2 _net10 gnd U="15 V"
+C:C6 _net9 _net11 C="1 nF" V=""
+R:R10 _net12 _net8 R="10 kOhm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+C:C7 gnd _net8 C="1 uF" V=""
+R:R8 _net9 _net11 R="1e6" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R9 _net9 _net13 R="56.2k" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+C:C5 _net13 _net11 C="470 nF" V=""
+R:R11 _net11 _net14 R="68.1 kOhm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+Diode:D_1N4148_2 _net15 _net16 Is="222p" N="1.65" Cj0="4p" M="0.333" Vj="0.7" Fc="0.5" Cp="0" Isr="0" Nr="2" Rs="68.6m" Tt="5.76n" Ikf="26.85" Kf="0" Af="1" Ffe="1" Bv="75" Ibv="0" Temp="26.85" Xti="3.0" Eg="1.11" Tbv="0.0" Trs="0.0" Ttt1="0.0" Ttt2="0.0" Tm1="0.0" Tm2="0.0" Tnom="26.85" Area="1.0"
+R:R13 _net8 _net16 R="100k" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R12 _net8 _net15 R="332" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+C:C8 gnd _net16 C="220 nF" V=""
+R:R14 _net14 _net17 R="1e6" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+Diode:D_1N4148_3 _net14 _net18 Is="222p" N="1.65" Cj0="4p" M="0.333" Vj="0.7" Fc="0.5" Cp="0" Isr="0" Nr="2" Rs="68.6m" Tt="5.76n" Ikf="26.85" Kf="0" Af="1" Ffe="1" Bv="75" Ibv="0" Temp="26.85" Xti="3.0" Eg="1.11" Tbv="0.0" Trs="0.0" Ttt1="0.0" Ttt2="0.0" Tm1="0.0" Tm2="0.0" Tnom="26.85" Area="1.0"
+Diode:D_1N4148_4 _net19 _net14 Is="222p" N="1.65" Cj0="4p" M="0.333" Vj="0.7" Fc="0.5" Cp="0" Isr="0" Nr="2" Rs="68.6m" Tt="5.76n" Ikf="26.85" Kf="0" Af="1" Ffe="1" Bv="75" Ibv="0" Temp="26.85" Xti="3.0" Eg="1.11" Tbv="0.0" Trs="0.0" Ttt1="0.0" Ttt2="0.0" Tm1="0.0" Tm2="0.0" Tnom="26.85" Area="1.0"
+C:C9 gnd _net14 C="1 nF" V=""
+R:R16 gnd _net18 R="1 k" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R15 gnd _net19 R="6.19 k" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+C:C10 gnd _net19 C="100 nF" V=""
+C:C11 gnd _net18 C="100 nF" V=""
+R:R17 _net20 _net19 R="12.1k" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R18 _net18 _net21 R="8.25k" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+Vdc:V3 _net20 gnd U="15 V"
+Vdc:V4 _net21 gnd U="15 V"
+Diode:D_1N4148_5 _net22 _net23 Is="222p" N="1.65" Cj0="4p" M="0.333" Vj="0.7" Fc="0.5" Cp="0" Isr="0" Nr="2" Rs="68.6m" Tt="5.76n" Ikf="26.85" Kf="0" Af="1" Ffe="1" Bv="75" Ibv="0" Temp="26.85" Xti="3.0" Eg="1.11" Tbv="0.0" Trs="0.0" Ttt1="0.0" Ttt2="0.0" Tm1="0.0" Tm2="0.0" Tnom="26.85" Area="1.0"
+C:C12 gnd _net23 C="100 pF" V=""
+Vdc:V6 _net24 gnd U="15 V"
+R:R22 _net25 _net26 R="1 kOhm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+Diode:D_1N4148_6 _net25 _net27 Is="222p" N="1.65" Cj0="4p" M="0.333" Vj="0.7" Fc="0.5" Cp="0" Isr="0" Nr="2" Rs="68.6m" Tt="5.76n" Ikf="26.85" Kf="0" Af="1" Ffe="1" Bv="75" Ibv="0" Temp="26.85" Xti="3.0" Eg="1.11" Tbv="0.0" Trs="0.0" Ttt1="0.0" Ttt2="0.0" Tm1="0.0" Tm2="0.0" Tnom="26.85" Area="1.0"
+R:R19 _net23 _net28 R="12.1k" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R20 _net22 _net28 R="5.11k" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+C:C13 gnd _net27 C="220pF" V=""
+R:R21 _net27 _net26 R="200k" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R23 _net11 _net10 R="10k" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+SpLib:X6 _net14 _net27 gnd _net24 _net17 File="lm2901.lib" Device="LM2901" SymPattern="opamp5t" Params="" PinAssign="1;2;4;3;5"
+SpLib:X7 _net16 _net6 gnd _net4 _net29 File="lm2901.lib" Device="LM2901" SymPattern="opamp5t" Params="" PinAssign="1;2;4;3;5"
+R:R24 _net29 _net4 R="10 kOhm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+Vdc:V7 _net30 gnd U="15 V"
+Vdc:V8 _net32 gnd U="15 V"
+Diode:D_1N4148_7 _net33 _net34 Is="222p" N="1.65" Cj0="4p" M="0.333" Vj="0.7" Fc="0.5" Cp="0" Isr="0" Nr="2" Rs="68.6m" Tt="5.76n" Ikf="26.85" Kf="0" Af="1" Ffe="1" Bv="75" Ibv="0" Temp="26.85" Xti="3.0" Eg="1.11" Tbv="0.0" Trs="0.0" Ttt1="0.0" Ttt2="0.0" Tm1="0.0" Tm2="0.0" Tnom="26.85" Area="1.0"
+SpLib:X9 _net35 _net34 _net36 gnd _net37 File="lm2901.lib" Device="LM2901" SymPattern="opamp5t" Params="" PinAssign="1;2;3;4;5"
+R:R27 _net33 _net38 R="10 kOhm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R28 _net34 _net38 R="1e6" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+C:C14 gnd _net34 C="22uF" V=""
+R:R25 _net31 _net39 R="10 kOhm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R26 _net31 _net32 R="10 kOhm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R30 _net35 gnd R="10k" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R29 _net36 _net35 R="5.81k" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+Vdc:V9 _net36 gnd U="15 V"
+R:R31 _net37 _net35 R="33.2k" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+SpLib:X10 _net29 _net38 gnd gnd _net40 _net41 _net42 gnd File="CD4000_v.lib" Device="CD4013B" SymPattern="auto" Params="" PinAssign=""
+Vdc:V10 _net42 gnd U="15 V"
+SpLib:X11 _net38 _net37 _net41 _net43 _net42 gnd File="CD4000_v.lib" Device="CD4023B" SymPattern="auto" Params="" PinAssign=""
+R:R32 _net43 _net44 R="10 kOhm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+Diode:D_1N4148_8 _net43 _net44 Is="222p" N="1.65" Cj0="4p" M="0.333" Vj="0.7" Fc="0.5" Cp="0" Isr="0" Nr="2" Rs="68.6m" Tt="5.76n" Ikf="26.85" Kf="0" Af="1" Ffe="1" Bv="75" Ibv="0" Temp="26.85" Xti="3.0" Eg="1.11" Tbv="0.0" Trs="0.0" Ttt1="0.0" Ttt2="0.0" Tm1="0.0" Tm2="0.0" Tnom="26.85" Area="1.0"
+MOSFET:T1 _net43 _net8 gnd gnd Type="nfet" Vt0="3.788" Kp="20.73u" Gamma="0" Phi="0.6" Lambda="0.0" Rd="0.1356" Rs="19.61m" Rg="1.278" Is="48.39p" N="1" W="0.66" L="2u" Ld="0.0" Tox="0.1 um" Cgso="1.628n" Cgdo="452.2p" Cgbo="0.0" Cbd="0.0 F" Cbs="0.0 F" Pb="0.8" Mj="0.5" Fc="0.5" Cjsw="0.0" Mjsw="0.33" Tt="312n" Nsub="0.0" Nss="0.0" Tpg="1" Uo="600" Rsh="0.0" Nrd="1" Nrs="1" Cj="0.0" Js="0.0" Ad="0.0" As="0.0" Pd="0.0 m" Ps="0.0 m" Kf="0.0" Af="1.0" Ffe="1.0" Temp="26.85" Tnom="26.85" UseGlobTemp="yes"
+Vdc:V13 _net45 gnd U="15 V"
+SpLib:X15 _net46 _net17 _net47 _net48 _net49 gnd File="CD4000_v.lib" Device="CD4023B" SymPattern="auto" Params="" PinAssign=""
+Vdc:V16 _net50 gnd U="15 V"
+Vdc:V17 _net49 gnd U="15 V"
+R:R33 _net49 _net48 R="10 kOhm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R34 _net50 _net51 R="10 kOhm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R35 _net51 _net52 R="10 kOhm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+Diode:D_1N4148_9 _net51 _net52 Is="222p" N="1.65" Cj0="4p" M="0.333" Vj="0.7" Fc="0.5" Cp="0" Isr="0" Nr="2" Rs="68.6m" Tt="5.76n" Ikf="26.85" Kf="0" Af="1" Ffe="1" Bv="75" Ibv="0" Temp="26.85" Xti="3.0" Eg="1.11" Tbv="0.0" Trs="0.0" Ttt1="0.0" Ttt2="0.0" Tm1="0.0" Tm2="0.0" Tnom="26.85" Area="1.0"
+R:R36 _net48 _net53 R="10 kOhm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+Diode:D_1N4148_10 _net48 _net53 Is="222p" N="1.65" Cj0="4p" M="0.333" Vj="0.7" Fc="0.5" Cp="0" Isr="0" Nr="2" Rs="68.6m" Tt="5.76n" Ikf="26.85" Kf="0" Af="1" Ffe="1" Bv="75" Ibv="0" Temp="26.85" Xti="3.0" Eg="1.11" Tbv="0.0" Trs="0.0" Ttt1="0.0" Ttt2="0.0" Tm1="0.0" Tm2="0.0" Tnom="26.85" Area="1.0"
+SpLib:X19 _net54 _net55 _net56 _net57 _net58 _net58 _net59 gnd File="UCC27424.lib" Device="UCC27424" SymPattern="auto" Params="" PinAssign=""
+Vdc:V18 _net59 gnd U="25 V"
+SpLib:X8 _net39 _net38 _net30 gnd File="CD4000_v.lib" Device="CD40106B" SymPattern="auto" Params="" PinAssign=""
+Vdc:V19 _net60 gnd U="15 V"
+SpLib:X20 _net44 _net58 _net60 gnd File="CD4000_v.lib" Device="CD40106B" SymPattern="auto" Params="" PinAssign=""
+Vdc:V20 _net61 gnd U="15 V"
+SpLib:X21 _net43 _net46 _net61 gnd File="CD4000_v.lib" Device="CD40106B" SymPattern="auto" Params="" PinAssign=""
+SpLib:X22 _net53 _net55 _net49 gnd File="CD4000_v.lib" Device="CD40106B" SymPattern="auto" Params="" PinAssign=""
+SpLib:X23 _net52 _net54 _net50 gnd File="CD4000_v.lib" Device="CD40106B" SymPattern="auto" Params="" PinAssign=""
+SpLib:X24 _net17 _net28 _net21 gnd File="CD4000_v.lib" Device="CD40106B" SymPattern="auto" Params="" PinAssign=""
+SpLib:X5 _net23 _net26 _net24 gnd File="CD4000_v.lib" Device="CD40106B" SymPattern="auto" Params="" PinAssign=""
+SpLib:X16 _net46 _net17 _net62 _net51 _net50 gnd File="CD4000_v.lib" Device="CD4023B" SymPattern="auto" Params="" PinAssign=""
+SpLib:X14 gnd _net28 _net47 gnd _net62 _net47 _net45 gnd File="CD4000_v.lib" Device="CD4013B" SymPattern="auto" Params="" PinAssign=""

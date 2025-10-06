@@ -1,0 +1,25 @@
+<Qucs Dataset 25.1.2>
+<indep TIME 0>
+</indep>
+<dep tran.V(A) TIME>
+</dep>
+<dep tran.V(ANDTEST) TIME>
+</dep>
+<dep tran.V(B) TIME>
+</dep>
+<dep tran.I(PR1) TIME>
+</dep>
+<dep tran.V(IN) TIME>
+</dep>
+<dep tran.V(IN1) TIME>
+</dep>
+<dep tran.V(IN2) TIME>
+</dep>
+<dep tran.V(IN3) TIME>
+</dep>
+<dep tran.V(IN4) TIME>
+</dep>
+<dep tran.V(TEST4) TIME>
+</dep>
+<dep tran.V(TEST33) TIME>
+</dep>

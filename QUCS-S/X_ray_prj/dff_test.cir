@@ -1,0 +1,47 @@
+* test_ideal_dff.cir
+* Ideal D Flip-Flop testbench
+
+******************************************************
+* Subcircuit: Ideal D Flip-Flop (positive-edge triggered)
+* Ports: D CLK Q
+* Logic levels: 0 V and VDD (default 5V)
+******************************************************
+.subckt DFF D CLK Q PARAMS: VDD=5 VTH=2.5
+* Internal node stores state
+Bstate nx 0 V = { (ddt(V(CLK)) > 1e6 ? V(D) : V(nx)) }
+* Output
+Bq Q 0 V = { V(nx) }
+.ends DFF
+
+
+******************************************************
+* Testbench
+******************************************************
+Vdd  vdd  0  DC 5
+
+* Clock: 0->5V, 20ns period, 10ns high, 10ns low
+Vclk clk 0 PULSE(0 5 0 1n 1n 10n 20n)
+
+* Data: changing every 30ns
+Vd d 0 PULSE(0 5 0 1n 1n 30n 60n)
+
+* Instantiate DFF
+Xdff d clk q DFF VDD=5 VTH=2.5 TR=1n
+
+* Load resistor for Q (optional)
+Rload q 0 1k
+
+******************************************************
+* Simulation commands
+******************************************************
+.tran 0.1n 200n
+
+.control
+run
+* Plot D, CLK, Q (shifted for visibility)
+plot v(d) v(clk)+6 v(q)+12
+* Optional: print Q waveform values
+* print v(q)
+.endc
+
+.end

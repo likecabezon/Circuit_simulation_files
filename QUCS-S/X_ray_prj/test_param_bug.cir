@@ -1,0 +1,21 @@
+* test_param_bug.cir
+* This tests if .param inside a subckt is passed correctly to a nested subckt.
+
+.subckt stage in out rval=1k
+.param rstage = {rval}
+R1 in out {rstage}
+.ends stage
+
+.subckt two_stage in out rval=1k
+.param rmain = {rval}
+X1 in mid stage rval={rmain}
+X2 mid out stage rval={rmain}
+.ends two_stage
+
+V1 in 0 DC 1
+XTOP in out two_stage rval=2k
+Rload out 0 1k
+
+.op
+.print all
+.end

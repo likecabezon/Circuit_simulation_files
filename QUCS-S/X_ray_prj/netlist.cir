@@ -1,0 +1,117 @@
+* Qucs 25.1.2  /home/luis/QucsWorkspace/X_ray_prj/Acc_voltage_feedback.sch
+.INCLUDE "/home/luis/QucsWorkspace/X_ray_prj/project_lib.lib"
+
+.SUBCKT Ideal_OpAmp 0 in_p in_m out GBP=1e6 AOLDC=106 RO=75 VLIMP=14 VLIMN=-14 
+.PARAM OLG = 10**(AOLDC/20)
+.PARAM fg = GBP/OLG
+.PARAM C1 = 1e-3/sqrt(6.2831853*fg)
+.PARAM R1 = 1e3/sqrt(6.2831853*fg)
+ESRC1 _net0 0 in_p in_m {OLG}
+R2 out _net1 {RO}
+R1 nC _net0 {R1}
+C1 nC 0 {C1}
+B1 _net1 0 V = V(nC)*u(VLIMP-V(nC))*u(V(nC)-VLIMN)+VLIMP*u(V(nC)-VLIMP)+VLIMN*u(VLIMN-V(nC)) 
+.ENDS         
+  
+R1 _net0 test33  450E6 tc1=0.0 tc2=0.0 
+C1 0 test33  4.7N 
+R3 test33 _net2  1K tc1=0.0 tc2=0.0 
+D_1N4148_1 _net2 _net3 DMOD_D_1N4148_1 AREA=1.0
+.MODEL DMOD_D_1N4148_1 D (Is=222P N=1.65 Cj0=4P M=0.333 Vj=0.7 Fc=0.5 Rs=68.6M Tt=5.76N Ikf=26.85 Kf=0 Af=1 Bv=75 Ibv=0 Xti=3.0 Eg=1.11 Tbv1=0.0 Trs1=0.0 Tnom=26.85 )
+V1 _net3 0 DC 15
+C2 0 _net2  1N 
+R4 IN IN3  10K tc1=0.0 tc2=0.0 
+R5 IN3 _net3  180K tc1=0.0 tc2=0.0 
+C3 0 IN3  33N 
+R7 IN1 IN  10K tc1=0.0 tc2=0.0 
+V2 _net4 0 DC 15
+C6 IN1 _net5  1N 
+R10 _net6 _net7  10K tc1=0.0 tc2=0.0 
+C7 0 _net7  1U 
+R8 IN1 _net5  1E6 tc1=0.0 tc2=0.0 
+R9 IN1 _net8  56.2K tc1=0.0 tc2=0.0 
+C5 _net8 _net5  470N 
+R11 _net5 IN2  68.1K tc1=0.0 tc2=0.0 
+D_1N4148_2 _net10 _net9 DMOD_D_1N4148_2 AREA=1.0
+.MODEL DMOD_D_1N4148_2 D (Is=222P N=1.65 Cj0=4P M=0.333 Vj=0.7 Fc=0.5 Rs=68.6M Tt=5.76N Ikf=26.85 Kf=0 Af=1 Bv=75 Ibv=0 Xti=3.0 Eg=1.11 Tbv1=0.0 Trs1=0.0 Tnom=26.85 )
+R13 _net7 _net10  100K tc1=0.0 tc2=0.0 
+R12 _net7 _net9  332 tc1=0.0 tc2=0.0 
+C8 0 _net10  220N 
+R14 IN2 _net11  1E6 tc1=0.0 tc2=0.0 
+D_1N4148_3 _net12 IN2 DMOD_D_1N4148_3 AREA=1.0
+.MODEL DMOD_D_1N4148_3 D (Is=222P N=1.65 Cj0=4P M=0.333 Vj=0.7 Fc=0.5 Rs=68.6M Tt=5.76N Ikf=26.85 Kf=0 Af=1 Bv=75 Ibv=0 Xti=3.0 Eg=1.11 Tbv1=0.0 Trs1=0.0 Tnom=26.85 )
+D_1N4148_4 IN2 _net13 DMOD_D_1N4148_4 AREA=1.0
+.MODEL DMOD_D_1N4148_4 D (Is=222P N=1.65 Cj0=4P M=0.333 Vj=0.7 Fc=0.5 Rs=68.6M Tt=5.76N Ikf=26.85 Kf=0 Af=1 Bv=75 Ibv=0 Xti=3.0 Eg=1.11 Tbv1=0.0 Trs1=0.0 Tnom=26.85 )
+C9 0 IN2  1N 
+R16 0 _net12  1K tc1=0.0 tc2=0.0 
+R15 0 _net13  6.19K tc1=0.0 tc2=0.0 
+C10 0 _net13  100N 
+C11 0 _net12  100N 
+R17 _net14 _net13  12.1K tc1=0.0 tc2=0.0 
+R18 _net12 _net15  8.25K tc1=0.0 tc2=0.0 
+V3 _net14 0 DC 15
+V4 _net15 0 DC 15
+D_1N4148_5 _net17 _net16 DMOD_D_1N4148_5 AREA=1.0
+.MODEL DMOD_D_1N4148_5 D (Is=222P N=1.65 Cj0=4P M=0.333 Vj=0.7 Fc=0.5 Rs=68.6M Tt=5.76N Ikf=26.85 Kf=0 Af=1 Bv=75 Ibv=0 Xti=3.0 Eg=1.11 Tbv1=0.0 Trs1=0.0 Tnom=26.85 )
+C12 0 _net17  100P 
+V6 _net18 0 DC 15
+R22 _net19 _net20  1K tc1=0.0 tc2=0.0 
+D_1N4148_6 TEST4 _net19 DMOD_D_1N4148_6 AREA=1.0
+.MODEL DMOD_D_1N4148_6 D (Is=222P N=1.65 Cj0=4P M=0.333 Vj=0.7 Fc=0.5 Rs=68.6M Tt=5.76N Ikf=26.85 Kf=0 Af=1 Bv=75 Ibv=0 Xti=3.0 Eg=1.11 Tbv1=0.0 Trs1=0.0 Tnom=26.85 )
+R19 _net17 _net21  12.1K tc1=0.0 tc2=0.0 
+R20 _net16 _net21  5.11K tc1=0.0 tc2=0.0 
+C13 0 TEST4  220P 
+R21 TEST4 _net20  200K tc1=0.0 tc2=0.0 
+R23 _net5 _net4  10K tc1=0.0 tc2=0.0 
+R24 _net22 _net3  10K tc1=0.0 tc2=0.0 
+D_1N4148_7 _net25 _net24 DMOD_D_1N4148_7 AREA=1.0
+.MODEL DMOD_D_1N4148_7 D (Is=222P N=1.65 Cj0=4P M=0.333 Vj=0.7 Fc=0.5 Rs=68.6M Tt=5.76N Ikf=26.85 Kf=0 Af=1 Bv=75 Ibv=0 Xti=3.0 Eg=1.11 Tbv1=0.0 Trs1=0.0 Tnom=26.85 )
+R27 _net24 _net23  10K tc1=0.0 tc2=0.0 
+R28 _net25 _net23  1E6 tc1=0.0 tc2=0.0 
+C14 0 _net25  22U 
+R30 _net26 0  10K tc1=0.0 tc2=0.0 
+R29 _net27 _net26  5.81K tc1=0.0 tc2=0.0 
+V9 _net27 0 DC 15
+R31 _net28 _net26  33.2K tc1=0.0 tc2=0.0 
+R32 _net29 _net30  10K tc1=0.0 tc2=0.0 
+D_1N4148_8 _net30 _net29 DMOD_D_1N4148_8 AREA=1.0
+.MODEL DMOD_D_1N4148_8 D (Is=222P N=1.65 Cj0=4P M=0.333 Vj=0.7 Fc=0.5 Rs=68.6M Tt=5.76N Ikf=26.85 Kf=0 Af=1 Bv=75 Ibv=0 Xti=3.0 Eg=1.11 Tbv1=0.0 Trs1=0.0 Tnom=26.85 )
+MT1 _net31 _net29 0 0 MMOD_T1 L=2e-06 W=0.66 Ad=0 As=0 Pd=0 Ps=0
+.MODEL MMOD_T1 NMOS (VtO=3.788 Kp=20.73U Gamma=0 Phi=0.6 Lambda=0.0 Rd=0.1356 Rs=19.61M Is=48.39P Ld=0.0 Tox=0.1UM Cgso=1.628N Cgdo=452.2P Cgbo=0.0 Cbd=0.0 Cbs=0.0 Pb=0.8 Mj=0.5 Fc=0.5 Cjsw=0.0 Mjsw=0.33 Tpg=1 Uo=600 Rsh=0.0 Cj=0.0 Js=0.0 Kf=0.0 Af=1.0 Tnom=26.85 )
+R33 VCC _net32  10K tc1=0.0 tc2=0.0 
+R34 _net33 VCC  10K tc1=0.0 tc2=0.0 
+R35 _net33 _net34  10K tc1=0.0 tc2=0.0 
+D_1N4148_9 _net34 _net33 DMOD_D_1N4148_9 AREA=1.0
+.MODEL DMOD_D_1N4148_9 D (Is=222P N=1.65 Cj0=4P M=0.333 Vj=0.7 Fc=0.5 Rs=68.6M Tt=5.76N Ikf=26.85 Kf=0 Af=1 Bv=75 Ibv=0 Xti=3.0 Eg=1.11 Tbv1=0.0 Trs1=0.0 Tnom=26.85 )
+R36 _net32 _net35  10K tc1=0.0 tc2=0.0 
+D_1N4148_10 _net35 _net32 DMOD_D_1N4148_10 AREA=1.0
+.MODEL DMOD_D_1N4148_10 D (Is=222P N=1.65 Cj0=4P M=0.333 Vj=0.7 Fc=0.5 Rs=68.6M Tt=5.76N Ikf=26.85 Kf=0 Af=1 Bv=75 Ibv=0 Xti=3.0 Eg=1.11 Tbv1=0.0 Trs1=0.0 Tnom=26.85 )
+V18 _net39 0 DC 25
+VPr1 _net7 _net31 DC 0
+R37 _net18 _net11  10K tc1=0.0 tc2=0.0 
+R2 0 test33  31.03K tc1=0.0 tc2=0.0 
+V29 _net0 0 DC 60E3
+V27 _net6 0 DC 4
+V28 _net23 0 DC 0 PULSE( 0 15 0N 10N 10N 10M {(10M)+(10M)+(10N)+(10N)} )  AC 0
+V30 VCC 0 DC 15
+XX21  _net17 _net20 VCC 0 CD40106_EMULATION 
+XX22  _net11 _net21 VCC 0 CD40106_EMULATION 
+XX23  _net30 _net38 VCC 0 CD40106_EMULATION 
+XX24  _net29 _net40 VCC 0 CD40106_EMULATION 
+XX25  _net35 B VCC 0 CD40106_EMULATION 
+XX26  _net34 A VCC 0 CD40106_EMULATION 
+XX27  VCC _net22 _net23 0 0 _net41 _net42 0 4013IC 
+XX28  VCC 0 _net21 _net43 0 _net44 _net43 0 4013IC 
+XX29  VCC _net23 _net42 _net28 _net29 0 4023IC 
+XX30  VCC _net43 _net11 _net40 _net32 0 4023IC 
+XX31  VCC _net40 _net44 _net11 _net33 0 4023IC 
+R39 _net34 0  1E7 tc1=0.0 tc2=0.0 
+R38 0 _net35  1E7 tc1=0.0 tc2=0.0 
+XOP3 0  _net2 IN IN Ideal_OpAmp GBP=1E6 AOLDC=106 RO=75 VLIMP=15 VLIMN=0
+XOP4 0  _net10 IN3 _net22 Ideal_OpAmp GBP=1E6 AOLDC=106 RO=75 VLIMP=15 VLIMN=0
+XOP5 0  _net7 IN1 _net5 Ideal_OpAmp GBP=1E6 AOLDC=106 RO=75 VLIMP=15 VLIMN=0
+XOP6 0  IN2 TEST4 _net11 Ideal_OpAmp GBP=1E6 AOLDC=106 RO=75 VLIMP=15 VLIMN=0
+XOP7 0  _net25 _net26 _net28 Ideal_OpAmp GBP=1E6 AOLDC=106 RO=75 VLIMP=15 VLIMN=0
+.tran 1e-07 0.1 0 
+.PRINT  tran format=raw file=spice4qucs.tran.plot v(A) v(B) I(VPr1) v(IN) v(IN1) v(IN2) v(IN3) v(TEST4) v(VCC) v(test33) 
+.END

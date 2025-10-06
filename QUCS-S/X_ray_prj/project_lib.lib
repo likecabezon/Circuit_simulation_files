@@ -1,0 +1,55 @@
+* Components for the X ray Tube Driver by Luis Lopez Cruz 2/9/2025
+
+* CD40106 Schmitt Trigger Inverter (behavioral model)
+* Nodes: 1 = IN, 2 = OUT, 3 = VDD, 4 = VSS
+.subckt CD40106_emulation IN OUT VDD VSS
+
+
+
+* Behavioral latch with hysteresis
+B1 STATE VSS V = if(V(IN,VSS)>(0.66*V(VDD,VSS)),1,if(V(IN,VSS)<(0.34*V(VDD,VSS)),0,V(DEL_STATE,VSS)))
+Tstate STATE VSS DEL_STATE VSS Z0=50 TD=20n
+Rstate DEL_STATE VSS 50
+
+* Output inverter stage (rail-to-rail)
+EOUT OUT_int VSS VALUE = { V(VDD,VSS) * (1 - V(STATE,VSS)) }
+Rout OUT_int OUT 20
+Cout OUT VSS 5p
+
+.ends CD40106_emulation
+
+
+*4013 IC D type
+.subckt 4013IC VCC SET CLK DATA RESET Q QN VSS
+
+*CLK edge detection
+B1 SAMP_CLK VSS V = V(CLK,VSS)
+R1 SAMP_CLK T_LIN_IN 50
+T1 T_LIN_IN VSS DELAYED_SAMP_CLK VSS Z0=50 TD=20n
+R2 DELAYED_SAMP_CLK VSS 50
+
+B2 RISING_EDGE VSS V = IF((V(CLK,VSS)>(0.5*V(VCC,VSS)))&&(V(DELAYED_SAMP_CLK,VSS)<(0.25*V(VCC,VSS))),1,0)
+
+*State update
+B3 STATE VSS V = IF(V(RESET,VSS)>(0.5*V(VCC,VSS)),0,IF(V(SET,VSS)>(0.5*V(VCC,VSS)),1,IF(V(RISING_EDGE,VSS)>0.5,IF(V(DATA,VSS)>(0.5*V(VCC,VSS)),1,0),IF(V(STATE_DELAYED,VSS)>0.5,1,0))))
+T2 STATE VSS STATE_DELAYED VSS Z0=50 TD=10n
+R4 STATE_DELAYED VSS 50
+
+*Output driving
+B4 Q_prev VSS V = V(VCC,VSS)*V(STATE,VSS)
+R5 Q_prev Q 20
+C1 Q VSS 5p
+B5 QN_prev VSS V = V(VCC,VSS)*(1-V(STATE,VSS))
+R6 QN_prev QN 20
+c2 QN VSS 5p
+
+.ends 4013IC
+
+*4023 triple NAND gate IC
+.subckt 4023IC VCC IN1 IN2 IN3 OUT VSS 
+
+Bout OUT_prev VSS V = IF((V(IN1,VSS)>(0.5*V(VCC,VSS)))&&(V(IN2,VSS)>(0.5*V(VCC,VSS)))&&(V(IN3,VSS)>(0.5*V(VCC,VSS))),0,V(VCC,VSS))
+Rout OUT_prev OUT 20
+Cout OUT VSS 5p
+
+.ends 4023IC

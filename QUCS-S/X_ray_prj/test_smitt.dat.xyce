@@ -1,0 +1,11 @@
+<Qucs Dataset 25.1.2>
+<indep TIME 0>
+</indep>
+<dep tran.V(CLK) TIME>
+</dep>
+<dep tran.V(D) TIME>
+</dep>
+<dep tran.V(Q) TIME>
+</dep>
+<dep tran.V(QN) TIME>
+</dep>

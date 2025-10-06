@@ -1,0 +1,23 @@
+<Qucs Dataset 25.1.2>
+<indep TIME 0>
+</indep>
+<dep tran.V(TEST) TIME>
+</dep>
+<dep tran.V(V1) TIME>
+</dep>
+<dep tran.V(VC4) TIME>
+</dep>
+<dep tran.V(VC1) TIME>
+</dep>
+<dep tran.V(VC2) TIME>
+</dep>
+<dep tran.V(VC3) TIME>
+</dep>
+<dep tran.V(VLP) TIME>
+</dep>
+<dep tran.V(VNEG) TIME>
+</dep>
+<dep tran.V(VPOS) TIME>
+</dep>
+<dep tran.V(VLN) TIME>
+</dep>

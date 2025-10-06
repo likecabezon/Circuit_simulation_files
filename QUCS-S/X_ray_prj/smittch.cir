@@ -1,0 +1,27 @@
+* Qucs 25.1.2  /home/luis/QucsWorkspace/X_ray_prj/CD40106.sch
+.INCLUDE "/usr/local/share/qucs-s/xspice_cmlib/include/ngspice_mathfunc.inc"
+V1 VCC 0 DC 15
+V2 _net0 0 DC 7.5 SIN(7.5 7.5 1K 0 0 0) AC 7.5 ACPHASE 0
+MT12 _net1 _net0 0 0 MMOD_T12 L=6e-06 W=1e-06 Ad=0 As=0 Pd=0 Ps=0
+.MODEL MMOD_T12 NMOS (Vt0=1.0 Kp=5E-5 Gamma=0.6 Phi=0.7 Lambda=0.01 Rd=0.0 Rs=0.0 Is=1E-14 Ld=0.0 Tox=0.1UM Cgso=0.0 Cgdo=0.0 Cgbo=0.0 Cbd=0.0 Cbs=0.0 Pb=0.8 Mj=0.5 Fc=0.5 Cjsw=0.0 Mjsw=0.33 Tpg=1 Uo=600.0 Rsh=0.0 Cj=0.0 Js=0.0 Kf=0.0 Af=1.0 Tnom=26.85 )
+MT13 VCC Vo _net1 0 MMOD_T13 L=6e-06 W=6e-06 Ad=0 As=0 Pd=0 Ps=0
+.MODEL MMOD_T13 NMOS (Vt0=1.50 Kp=5E-5 Gamma=0.6 Phi=0.7 Lambda=0.01 Rd=0.0 Rs=0.0 Is=1E-14 Ld=0.0 Tox=0.1UM Cgso=0.0 Cgdo=0.0 Cgbo=0.0 Cbd=0.0 Cbs=0.0 Pb=0.8 Mj=0.5 Fc=0.5 Cjsw=0.0 Mjsw=0.33 Tpg=1 Uo=600.0 Rsh=0.0 Cj=0.0 Js=0.0 Kf=0.0 Af=1.0 Tnom=26.85 )
+MT11 Vo _net0 _net1 0 MMOD_T11 L=6e-06 W=1.8e-05 Ad=0 As=0 Pd=0 Ps=0
+.MODEL MMOD_T11 NMOS (Vt0=1.0 Kp=5E-5 Gamma=0.6 Phi=0.7 Lambda=0.01 Rd=0.0 Rs=0.0 Is=1E-14 Ld=0.0 Tox=0.1UM Cgso=0.0 Cgdo=0.0 Cgbo=0.0 Cbd=0.0 Cbs=0.0 Pb=0.8 Mj=0.5 Fc=0.5 Cjsw=0.0 Mjsw=0.33 Tpg=1 Uo=600.0 Rsh=0.0 Cj=0.0 Js=0.0 Kf=0.0 Af=1.0 Tnom=26.85 )
+MT16 VCC _net0 _net2 VCC MMOD_T16 L=6e-06 W=1.5e-05 Ad=0 As=0 Pd=0 Ps=0
+.MODEL MMOD_T16 PMOS (Vt0=-1.0V Kp=2E-5 Gamma=0.6 Phi=0.7 Lambda=0.01 Rd=0.0 Rs=0.0 Is=1E-14 Ld=0.0 Tox=0.1UM Cgso=0.0 Cgdo=0.0 Cgbo=0.0 Cbd=0.0 Cbs=0.0 Pb=0.8 Mj=0.5 Fc=0.5 Cjsw=0.0 Mjsw=0.33 Tpg=1 Uo=600.0 Rsh=0.0 Cj=0.0 Js=0.0 Kf=0.0 Af=1.0 Tnom=26.85 )
+MT15 _net2 Vo 0 VCC MMOD_T15 L=6e-06 W=1.5e-05 Ad=0 As=0 Pd=0 Ps=0
+.MODEL MMOD_T15 PMOS (Vt0=-1.0V Kp=2E-5 Gamma=0.6 Phi=0.7 Lambda=0.01 Rd=0.0 Rs=0.0 Is=1E-14 Ld=0.0 Tox=0.1UM Cgso=0.0 Cgdo=0.0 Cgbo=0.0 Cbd=0.0 Cbs=0.0 Pb=0.8 Mj=0.5 Fc=0.5 Cjsw=0.0 Mjsw=0.33 Tpg=1 Uo=600.0 Rsh=0.0 Cj=0.0 Js=0.0 Kf=0.0 Af=1.0 Tnom=26.85 )
+MT17 _net2 _net0 Vo VCC MMOD_T17 L=6e-06 W=4.5e-05 Ad=0 As=0 Pd=0 Ps=0
+.MODEL MMOD_T17 PMOS (Vt0=-1.0V Kp=2E-5 Gamma=0.6 Phi=0.7 Lambda=0.01 Rd=0.0 Rs=0.0 Is=1E-14 Ld=0.0 Tox=0.1UM Cgso=0.0 Cgdo=0.0 Cgbo=0.0 Cbd=0.0 Cbs=0.0 Pb=0.8 Mj=0.5 Fc=0.5 Cjsw=0.0 Mjsw=0.33 Tpg=1 Uo=600.0 Rsh=0.0 Cj=0.0 Js=0.0 Kf=0.0 Af=1.0 Tnom=26.85 )
+
+.control
+
+tran 1e-05 0.01 0 
+write spice4qucs.tr1.plot v(VCC) v(Vo)
+destroy all
+reset
+
+exit
+.endc
+.END

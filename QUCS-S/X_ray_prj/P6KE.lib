@@ -1,0 +1,506 @@
+* File     : P6KE.LIB
+* Revision : 1.0
+* Date     : June 2011
+*
+***************************************************************************************
+* Information included is believed to be accurate and reliable. However, *
+* ST Microelectronics assumes no responsibility for the consequences of  *
+* use of such information nor for any infringement of patents or other   *
+* rights of third parties which may result from its use. No license is   *
+* granted by implication or otherwise under any patent patent rights of  *
+* ST Microelectronics. Specification mentionned in this publication are  *
+* subject to change without notice. This publication superseedes and 	 *
+* replaces all information previously supplied. ST Microelectronics      *
+* products are not authorized for use as critical components in life     *
+* support or systems without express written approval of ST              *
+* Microelectronics.                          	                         *
+*                                                                    	 *			*
+*    (c) 1997 ST Microelectronics. All rights reserved.     	         *
+*                                                                    	 *			*
+*           ST Microelectronics GROUP OF COMPANIES                       *
+* Australia - Brazil - France - Germany - Hong Kong - Italy - Japan  	 *
+* Korea - Malaysia - Malta - Morocco - The Netherlands - Singapore   	 *
+* Spain - Sweden - Switzerland - Taiwan - United Kingdom - U.S.A.    	 *
+*									 *
+***************************************************************************************
+*
+* UNIDIRECTIONAL TRANSIL
+*$
+.SUBCKT TRANSIL  Anode  Cathode  PARAMS:
++ IRM=1u VBRnom=12  VBRmax=13  IR=1m 
++ VCLmax=20  Ipp=100  Cjof=1n
++ ISF=1f  NF=1  RSF=1m  IKFF=1000
+* IRM		Stand-off current at VRM
+* VBR		Breakdown voltage
+* IR		Reverse current at VBR
+* VCL		Clamping voltage
+* Ipp		Surge current
+* Cjo		junction capacitance at 0V
+* IS		Saturation current
+* N		Emission coefficient
+* RS		Serie résistance
+* IKF		High injection knee current
+Drev    A_int    Cathode    TRANSR
+Dfwd   Anode   Cathode    TRANSF
+Dr       A_int    Anode       DTRANS
+***** REVERSE BEHAVIOUR *****
+.MODEL  TRANSR  D(
++ IS={IRM/2}   RS={(VCLmax-VBRmax)/Ipp}
++ BV={VBRnom}  IBV={IR}
++ IKF=1000  Cjo=1p  M=.3333  VJ=.6
++ ISR=1n  TT=1u )
+****************** FORWARD BEHAVIOUR ******************
+***** JUNCTION CAPACITANCE BEHAVIOUR Cj(VR) *****
+.MODEL   TRANSF  D(
++ IS={ISF}  N={NF}  RS={RSF}  IKF={IKFF}
++ Cjo={Cjof}  M=.3333  VJ=0.6  ISR=1.000E-21
++ BV=1000  IBV=1n  TT=1u )
+.MODEL   DTRANS  D(
++ IS=1n  N=.01  RS=1u  IKF=1000  Cjo=1p
++ M=.3333  VJ=.6  ISR=1n  BV=1000  IBV=1u
++ TT=1u )
+.ENDS
+*********** BIDIRECTIONAL TRANSIL **********
+******** PARAMETERS DESCRIPTION ********
+*********** LOW VOLTAGE ************
+*$
+.SUBCKT   TRANSILB   Anode1  Anode2   PARAMS:
++ IRM=1u VBRnom=12  VBRmax=13  IR=1m 
++ VCLmax=20  Ipp=100  Cjof=1n
++ ISBF=1f  NBF=1
+***** SCHEMATICS DESCRIPTION *****
+Drev1    A_int1     Cathode   TRANSR
+Dfwd1   Anode1    Cathode  TRANSBF
+Dr1       A_int1     Anode1    DTRANS
+Drev2    A_int2     Cathode   TRANSR
+Dfwd2   Anode2    Cathode   TRANSBF
+Dr2       A_int2     Anode2     DTRANS
+***** REVERSE BEHAVIOUR *****
+.MODEL  TRANSR  D(
++ IS={IRM/2}   RS={(VCLmax-VBRmax)/Ipp}
++ BV={VBRnom}  IBV={IR}
++ IKF=1000  Cjo=1p  M=.3333  VJ=.6
++ ISR=1p  TT=1u )
+***** JUNCTION CAPACITANCE BEHAVIOUR *****
+.MODEL   TRANSBF   D(
++ IS={ISBF}  N={NBF}  RS=1u  IKF=1000
++ Cjo={Cjof}  M=.3333  VJ=.6  ISR=1p
++ BV=1000  IBV=100u  TT=1u )
+.MODEL   DTRANS  D(
++ IS=1n  N=.01  RS=1u  IKF=1000  Cjo=1p
++ M=.3333  VJ=.6  ISR=1p  BV=1000  IBV=100u
++ TT=1u )
+.ENDS
+*********** HIGH VOLTAGE ************
+*$
+.SUBCKT   TRANSILBHT   Anode1  Anode2   PARAMS:
++ IRM=1u VBRnom=12  VBRmax=13  IR=1m 
++ VCLmax=20  Ipp=100  Cjof=1n
+******* SCHEMATICS DESCRIPTION *******
+Drev1    A_int1     Cathode   TRANSR
+Dfwd1   Anode1    Cathode  TRANSBF
+Dr1       A_int1     Anode1    DTRANS
+Drev2    A_int2     Cathode   TRANSR
+Dfwd2   Anode2    Cathode   TRANSBF
+Dr2       A_int2     Anode2     DTRANS
+********** REVERSE BEHAVIOUR **********
+.MODEL  TRANSR  D(
++ IS={IRM/2}   RS={(VCLmax-VBRmax)/Ipp}
++ BV={VBRnom}  IBV={IR}
++ IKF=1000  Cjo=1p  M=.3333  VJ=.6
++ ISR=1p  TT=1u )
+***** JUNCTION CAPACITANCE BEHAVIOUR *****
+.MODEL   TRANSBF   D(
++ IS=1p  N=1  RS=1m  IKF=1000
++ Cjo={Cjof}  M=.3333  VJ=.6  ISR=1p
++ BV=1000  IBV=100u  TT=1u )
+.MODEL   DTRANS  D(
++ IS=1p  N=1  RS=1m  IKF=1000  Cjo=1p
++ M=.3333  VJ=.6  ISR=1p  BV=1000  IBV=100u
++ TT=1u )
+.ENDS
+*************************************************************************************************
+*				P6KE FAMILY					*
+*************************************************************************************************
+*$
+.SUBCKT  P6KE6V8A  Anode  Cathode
+X1  Anode  Cathode  TRANSIL  PARAMS:
++ IRM=1m  VBRnom=6.8  VBRmax=7.14
++ IR=10m  VCLmax=13.4  Ipp=298  Cjof=4000p
++ ISF=27.04f   NF=1.016  RSF=13.69m   IKFF=41.7
+.ENDS
+*$
+.SUBCKT  P6KE6V8CA  Anode1  Anode2
+X1  Anode1  Anode2  TRANSILB  PARAMS:
++ IRM=1m  VBRnom=6.8  VBRmax=7.14
++ IR=10m  VCLmax=13.4  Ipp=298  Cjof=4000p
++ ISBF=1n  NBF=.01
+.ENDS
+*$
+.SUBCKT  P6KE7V5A  Anode  Cathode
+X1  Anode  Cathode  TRANSIL  PARAMS:
++ IRM=500u  VBRnom=7.5  VBRmax=7.88
++ IR=10m  VCLmax=14.5  Ipp=276  Cjof=3700p
++ ISF=27.04f   NF=1.016  RSF=13.69m   IKFF=41.7
+.ENDS
+*$
+.SUBCKT  P6KE7V5CA  Anode1  Anode2
+X1  Anode1  Anode2  TRANSILB  PARAMS:
++ IRM=500u  VBRnom=7.5  VBRmax=7.88
++ IR=10m  VCLmax=14.5  Ipp=276  Cjof=3700p
++ ISBF=1n  NBF=.01
+.ENDS
+*$
+.SUBCKT  P6KE10A  Anode  Cathode
+X1  Anode  Cathode  TRANSIL  PARAMS:
++ IRM=10u  VBRnom=10  VBRmax=10.5
++ IR=1m  VCLmax=18.6  Ipp=215  Cjof=2800p
++ ISF=27.04f   NF=1.016  RSF=13.69m   IKFF=41.7
+.ENDS
+*$
+.SUBCKT  P6KE10CA  Anode1  Anode2
+X1  Anode1  Anode2  TRANSILB  PARAMS:
++ IRM=10u  VBRnom=10  VBRmax=10.5
++ IR=1m  VCLmax=18.6  Ipp=215  Cjof=2800p
++ ISBF=1n  NBF=.01
+.ENDS
+*$
+.SUBCKT  P6KE12A  Anode  Cathode
+X1  Anode  Cathode  TRANSIL  PARAMS:
++ IRM=5u  VBRnom=12  VBRmax=12.6
++ IR=1m  VCLmax=21.7  Ipp=184  Cjof=2300p
++ ISF=27.04f   NF=1.016  RSF=13.69m   IKFF=41.7
+.ENDS
+*$
+.SUBCKT  P6KE12CA  Anode1  Anode2
+X1  Anode1  Anode2  TRANSILB  PARAMS:
++ IRM=5u  VBRnom=12  VBRmax=12.6
++ IR=1m  VCLmax=21.7  Ipp=184  Cjof=2300p
++ ISBF=1n  NBF=.01
+.ENDS
+*$
+.SUBCKT  P6KE15A  Anode  Cathode
+X1  Anode  Cathode  TRANSIL  PARAMS:
++ IRM=5u  VBRnom=15  VBRmax=15.8
++ IR=1m  VCLmax=27.2  Ipp=147  Cjof=1900p
++ ISF=27.04f   NF=1.016  RSF=13.69m   IKFF=41.7
+.ENDS
+*$
+.SUBCKT  P6KE15CA  Anode1  Anode2
+X1  Anode1  Anode2  TRANSILB  PARAMS:
++ IRM=5u  VBRnom=15  VBRmax=15.8
++ IR=1m  VCLmax=27.2  Ipp=147  Cjof=1900p
++ ISBF=1n  NBF=.01
+.ENDS
+*$
+.SUBCKT  P6KE18A  Anode  Cathode
+X1  Anode  Cathode  TRANSIL  PARAMS:
++ IRM=5u  VBRnom=18  VBRmax=18.9
++ IR=1m  VCLmax=32.5  Ipp=123  Cjof=1600p
++ ISF=27.04f   NF=1.016  RSF=13.69m   IKFF=41.7
+.ENDS
+*$
+.SUBCKT  P6KE18CA  Anode1  Anode2
+X1  Anode1  Anode2  TRANSILB  PARAMS:
++ IRM=5u  VBRnom=18  VBRmax=18.9
++ IR=1m  VCLmax=32.5  Ipp=123  Cjof=1600p
++ ISBF=1n  NBF=.01
+.ENDS
+*$
+.SUBCKT  P6KE22A  Anode  Cathode
+X1  Anode  Cathode  TRANSIL  PARAMS:
++ IRM=5u  VBRnom=22  VBRmax=23.1
++ IR=1m  VCLmax=39.3  Ipp=102  Cjof=1350p
++ ISF=27.04f   NF=1.016  RSF=13.69m   IKFF=41.7
+.ENDS
+*$
+.SUBCKT  P6KE22CA  Anode1  Anode2
+X1  Anode1  Anode2  TRANSILB  PARAMS:
++ IRM=5u  VBRnom=22  VBRmax=23.1
++ IR=1m  VCLmax=39.3  Ipp=102  Cjof=1350p
++ ISBF=1n  NBF=.01
+.ENDS
+*$
+.SUBCKT  P6KE24A  Anode  Cathode
+X1  Anode  Cathode  TRANSIL  PARAMS:
++ IRM=5u  VBRnom=24  VBRmax=25.2
++ IR=1m  VCLmax=42.8  Ipp=93  Cjof=1250p
++ ISF=27.04f   NF=1.016  RSF=13.69m   IKFF=41.7
+.ENDS
+*$
+.SUBCKT  P6KE24CA  Anode1  Anode2
+X1  Anode1  Anode2  TRANSILB  PARAMS:
++ IRM=5u  VBRnom=24  VBRmax=25.2
++ IR=1m  VCLmax=42.8  Ipp=93  Cjof=1250p
++ ISBF=1p  NBF=.65
+.ENDS
+*$
+.SUBCKT  P6KE27A  Anode  Cathode
+X1  Anode  Cathode  TRANSIL  PARAMS:
++ IRM=5u  VBRnom=27  VBRmax=28.35
++ IR=1m  VCLmax=48.3  Ipp=83  Cjof=1150p
++ ISF=27.04f   NF=1.016  RSF=13.69m   IKFF=41.7
+.ENDS
+*$
+.SUBCKT  P6KE27CA  Anode1  Anode2
+X1  Anode1  Anode2  TRANSILB  PARAMS:
++ IRM=5u  VBRnom=27  VBRmax=28.35
++ IR=1m  VCLmax=48.3  Ipp=83  Cjof=1150p
++ ISBF=1p  NBF=.65
+.ENDS
+*$
+.SUBCKT  P6KE30A  Anode  Cathode
+X1  Anode  Cathode  TRANSIL  PARAMS:
++ IRM=5u  VBRnom=30  VBRmax=31.5
++ IR=1m  VCLmax=53.5  Ipp=76  Cjof=1075p
++ ISF=27.04f   NF=1.016  RSF=13.69m   IKFF=41.7
+.ENDS
+*$
+.SUBCKT  P6KE30CA  Anode1  Anode2
+X1  Anode1  Anode2  TRANSILB  PARAMS:
++ IRM=5u  VBRnom=30  VBRmax=31.5
++ IR=1m  VCLmax=53.5  Ipp=76  Cjof=1075p
++ ISBF=1p  NBF=.65
+.ENDS
+*$
+.SUBCKT  P6KE33A  Anode  Cathode
+X1  Anode  Cathode  TRANSIL  PARAMS:
++ IRM=5u  VBRnom=33  VBRmax=34.65
++ IR=1m  VCLmax=59  Ipp=68  Cjof=1000p
++ ISF=27.04f   NF=1.016  RSF=13.69m   IKFF=41.7
+.ENDS
+*$
+.SUBCKT  P6KE33CA  Anode1  Anode2
+X1  Anode1  Anode2  TRANSILB  PARAMS:
++ IRM=5u  VBRnom=33  VBRmax=34.65
++ IR=1m  VCLmax=59  Ipp=68  Cjof=1000p
++ ISBF=1p  NBF=.65
+.ENDS
+*$
+.SUBCKT  P6KE36A  Anode  Cathode
+X1  Anode  Cathode  TRANSIL  PARAMS:
++ IRM=5u  VBRnom=36  VBRmax=37.8
++ IR=1m  VCLmax=64.3  Ipp=62  Cjof=950p
++ ISF=27.04f   NF=1.016  RSF=13.69m   IKFF=41.7
+.ENDS
+*$
+.SUBCKT  P6KE36CA  Anode1  Anode2
+X1  Anode1  Anode2  TRANSILB  PARAMS:
++ IRM=5u  VBRnom=36  VBRmax=37.8
++ IR=1m  VCLmax=64.3  Ipp=62  Cjof=950p
++ ISBF=1p  NBF=.65
+.ENDS
+*$
+.SUBCKT  P6KE39A  Anode  Cathode
+X1  Anode  Cathode  TRANSIL  PARAMS:
++ IRM=5u  VBRnom=39  VBRmax=40.95
++ IR=1m  VCLmax=69.7  Ipp=57  Cjof=900p
++ ISF=27.04f   NF=1.016  RSF=13.69m   IKFF=41.7
+.ENDS
+*$
+.SUBCKT  P6KE39CA  Anode1  Anode2
+X1  Anode1  Anode2  TRANSILB  PARAMS:
++ IRM=5u  VBRnom=39  VBRmax=40.95
++ IR=1m  VCLmax=69.7  Ipp=57  Cjof=900p
++ ISBF=1p  NBF=.65
+.ENDS
+*$
+.SUBCKT  P6KE47A  Anode  Cathode
+X1  Anode  Cathode  TRANSIL  PARAMS:
++ IRM=5u  VBRnom=47  VBRmax=49.35
++ IR=1m  VCLmax=84  Ipp=48  Cjof=800p
++ ISF=27.04f   NF=1.016  RSF=13.69m   IKFF=41.7
+.ENDS
+*$
+.SUBCKT  P6KE47CA  Anode1  Anode2
+X1  Anode1  Anode2  TRANSILB  PARAMS:
++ IRM=5u  VBRnom=47  VBRmax=49.35
++ IR=1m  VCLmax=84  Ipp=48  Cjof=800p
++ ISBF=1p  NBF=.65
+.ENDS
+*$
+.SUBCKT  P6KE56A  Anode  Cathode
+X1  Anode  Cathode  TRANSIL  PARAMS:
++ IRM=5u  VBRnom=56  VBRmax=58.8
++ IR=1m  VCLmax=100  Ipp=40  Cjof=700p
++ ISF=27.04f   NF=1.016  RSF=13.69m   IKFF=41.7
+.ENDS
+*$
+.SUBCKT  P6KE56CA  Anode1  Anode2
+X1  Anode1  Anode2  TRANSILB  PARAMS:
++ IRM=5u  VBRnom=56  VBRmax=58.8
++ IR=1m  VCLmax=100  Ipp=40  Cjof=700p
++ ISBF=1p  NBF=.65
+.ENDS
+*$
+.SUBCKT  P6KE68A  Anode  Cathode
+X1  Anode  Cathode  TRANSIL  PARAMS:
++ IRM=5u  VBRnom=68  VBRmax=71.4
++ IR=1m  VCLmax=121  Ipp=33  Cjof=625p
++ ISF=27.04f   NF=1.016  RSF=13.69m   IKFF=41.7
+.ENDS
+*$
+.SUBCKT  P6KE68CA  Anode1  Anode2
+X1  Anode1  Anode2  TRANSILB  PARAMS:
++ IRM=5u  VBRnom=68  VBRmax=71.4
++ IR=1m  VCLmax=121  Ipp=33  Cjof=625p
++ ISBF=1p  NBF=.65
+.ENDS
+*$
+.SUBCKT  P6KE82A  Anode  Cathode
+X1  Anode  Cathode  TRANSIL  PARAMS:
++ IRM=5u  VBRnom=82  VBRmax=86.1
++ IR=1m  VCLmax=146  Ipp=27  Cjof=550p
++ ISF=27.04f   NF=1.016  RSF=13.69m   IKFF=41.7
+.ENDS
+*$
+.SUBCKT  P6KE82CA  Anode1  Anode2
+X1  Anode1  Anode2  TRANSILB  PARAMS:
++ IRM=5u  VBRnom=82  VBRmax=86.1
++ IR=1m  VCLmax=146  Ipp=27  Cjof=550p
++ ISBF=1p  NBF=.65
+.ENDS
+*$
+.SUBCKT  P6KE100A  Anode  Cathode
+X1  Anode  Cathode  TRANSIL  PARAMS:
++ IRM=5u  VBRnom=100  VBRmax=105
++ IR=1m  VCLmax=178  Ipp=22.5  Cjof=500p
++ ISF=27.04f   NF=1.016  RSF=13.69m   IKFF=41.7
+.ENDS
+*$
+.SUBCKT  P6KE100CA  Anode1  Anode2
+X1  Anode1  Anode2  TRANSILB  PARAMS:
++ IRM=5u  VBRnom=100  VBRmax=105
++ IR=1m  VCLmax=178  Ipp=22.5  Cjof=500p
++ ISBF=1p  NBF=.65
+.ENDS
+*$
+.SUBCKT  P6KE120A  Anode  Cathode
+X1  Anode  Cathode  TRANSIL  PARAMS:
++ IRM=5u  VBRnom=120  VBRmax=126
++ IR=1m  VCLmax=212  Ipp=19  Cjof=450p
++ ISF=27.04f   NF=1.016  RSF=13.69m   IKFF=41.7
+.ENDS
+*$
+.SUBCKT  P6KE120CA  Anode1  Anode2
+X1  Anode1  Anode2  TRANSILBHT  PARAMS:
++ IRM=5u  VBRnom=120  VBRmax=126
++ IR=1m  VCLmax=212  Ipp=19  Cjof=450p
+.ENDS
+*$
+.SUBCKT  P6KE150A  Anode  Cathode
+X1  Anode  Cathode  TRANSIL  PARAMS:
++ IRM=5u  VBRnom=150  VBRmax=157.5
++ IR=1m  VCLmax=265  Ipp=15  Cjof=400p
++ ISF=27.04f   NF=1.016  RSF=13.69m   IKFF=41.7
+.ENDS
+*$
+.SUBCKT  P6KE150CA  Anode1  Anode2
+X1  Anode1  Anode2  TRANSILBHT  PARAMS:
++ IRM=5u  VBRnom=150  VBRmax=157.5
++ IR=1m  VCLmax=265  Ipp=15  Cjof=400p
+.ENDS
+*$
+.SUBCKT  P6KE180A  Anode  Cathode
+X1  Anode  Cathode  TRANSIL  PARAMS:
++ IRM=5u  VBRnom=180  VBRmax=189
++ IR=1m  VCLmax=317  Ipp=12.6  Cjof=360p
++ ISF=27.04f   NF=1.016  RSF=13.69m   IKFF=41.7
+.ENDS
+*$
+.SUBCKT  P6KE180CA  Anode1  Anode2
+X1  Anode1  Anode2  TRANSILBHT  PARAMS:
++ IRM=5u  VBRnom=180  VBRmax=189
++ IR=1m  VCLmax=317  Ipp=12.6  Cjof=360p
+.ENDS
+*$
+.SUBCKT  P6KE200A  Anode  Cathode
+X1  Anode  Cathode  TRANSIL  PARAMS:
++ IRM=5u  VBRnom=200  VBRmax=210
++ IR=1m  VCLmax=353  Ipp=11.3  Cjof=350p
++ ISF=27.04f   NF=1.016  RSF=13.69m   IKFF=41.7
+.ENDS
+*$
+.SUBCKT  P6KE200CA  Anode1  Anode2
+X1  Anode1  Anode2  TRANSILBHT  PARAMS:
++ IRM=5u  VBRnom=200  VBRmax=210
++ IR=1m  VCLmax=353  Ipp=11.3  Cjof=350p
+.ENDS
+*$
+.SUBCKT  P6KE220A  Anode  Cathode
+X1  Anode  Cathode  TRANSIL  PARAMS:
++ IRM=5u  VBRnom=220  VBRmax=231
++ IR=1m  VCLmax=388  Ipp=10.3  Cjof=330p
++ ISF=27.04f   NF=1.016  RSF=13.69m   IKFF=41.7
+.ENDS
+*$
+.SUBCKT  P6KE220CA  Anode1  Anode2
+X1  Anode1  Anode2  TRANSILBHT  PARAMS:
++ IRM=5u  VBRnom=220  VBRmax=231
++ IR=1m  VCLmax=388  Ipp=10.3  Cjof=330p
+.ENDS
+*$
+.SUBCKT  P6KE250A  Anode  Cathode
+X1  Anode  Cathode  TRANSIL  PARAMS:
++ IRM=5u  VBRnom=250  VBRmax=262.5
++ IR=1m  VCLmax=442  Ipp=9  Cjof=310p
++ ISF=27.04f   NF=2.032  RSF=27.38m   IKFF=41.7
+.ENDS
+*$
+.SUBCKT  P6KE250CA  Anode1  Anode2
+X1  Anode1  Anode2  TRANSILBHT  PARAMS:
++ IRM=5u  VBRnom=250  VBRmax=262.5
++ IR=1m  VCLmax=442  Ipp=9  Cjof=310p
+.ENDS
+*$
+.SUBCKT  P6KE300A  Anode  Cathode
+X1  Anode  Cathode  TRANSIL  PARAMS:
++ IRM=5u  VBRnom=300  VBRmax=315
++ IR=1m  VCLmax=529  Ipp=7.6  Cjof=290p
++ ISF=27.04f   NF=2.032  RSF=27.38m   IKFF=41.7
+.ENDS
+*$
+.SUBCKT  P6KE300CA  Anode1  Anode2
+X1  Anode1  Anode2  TRANSILBHT  PARAMS:
++ IRM=5u  VBRnom=300  VBRmax=315
++ IR=1m  VCLmax=529  Ipp=7.6  Cjof=290p
+.ENDS
+*$
+.SUBCKT  P6KE350A  Anode  Cathode
+X1  Anode  Cathode  TRANSIL  PARAMS:
++ IRM=5u  VBRnom=350  VBRmax=368
++ IR=1m  VCLmax=618  Ipp=6.5  Cjof=270p
++ ISF=27.04f   NF=2.032  RSF=27.38m   IKFF=41.7
+.ENDS
+*$
+.SUBCKT  P6KE350CA  Anode1  Anode2
+X1  Anode1  Anode2  TRANSILBHT  PARAMS:
++ IRM=5u  VBRnom=350  VBRmax=368
++ IR=1m  VCLmax=618  Ipp=6.5  Cjof=270p
+.ENDS
+*$
+.SUBCKT  P6KE400A  Anode  Cathode
+X1  Anode  Cathode  TRANSIL  PARAMS:
++ IRM=5u  VBRnom=400  VBRmax=420
++ IR=1m  VCLmax=706  Ipp=5.7  Cjof=360p
++ ISF=27.04f   NF=2.032  RSF=27.38m   IKFF=41.7
+.ENDS
+*$
+.SUBCKT  P6KE400CA  Anode1  Anode2
+X1  Anode1  Anode2  TRANSILBHT  PARAMS:
++ IRM=5u  VBRnom=400  VBRmax=420
++ IR=1m  VCLmax=706  Ipp=5.7  Cjof=360p
+.ENDS
+*$
+.SUBCKT  P6KE440A  Anode  Cathode
+X1  Anode  Cathode  TRANSIL  PARAMS:
++ IRM=5u  VBRnom=440  VBRmax=462
++ IR=1m  VCLmax=776  Ipp=5.2  Cjof=350p
++ ISF=27.04f   NF=2.032  RSF=27.38m   IKFF=41.7
+.ENDS
+*$
+.SUBCKT  P6KE440CA  Anode1  Anode2
+X1  Anode1  Anode2  TRANSILBHT  PARAMS:
++ IRM=5u  VBRnom=440  VBRmax=462
++ IR=1m  VCLmax=776  Ipp=5.2  Cjof=350p
+.ENDS
